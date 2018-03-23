@@ -62,19 +62,32 @@ a role-playing game after all.)
 
 * I have never seen \t in anything before and have never used it, what is that? -Looked up, found it to be the horintal tab. (I also 
 found a wholelist of what I learned to be called Escape Sequences. These are used to represent certain character and text operations.)
-*Why was there ever a reason to put everything in one giant struct?
+
+* Why was there ever a reason to put everything in one giant struct?
 
 * Wasn't this ever found to be confusing and seemingly run-on?
 
 * What is the advantage of using printf over cout? What is the memory cost?
+* -cout is typesafe,couldn't really find a more 
 
 * When being redone, could add lots of flags.
 
 * I'm still kind of confused on how the game difficulty works?
 
-* On my computer, the DrawMap() function isnt showing the map ? What is the reason, could it be because it isnt returning anything except void?
+## Updates-Release 1
+* I have since moved from my original idea of separating it how I above stated, and started to do it a different way, stated later below.
 
+* I have 2 different versions of this that I am currently working on. I have the original file that is supposedly in C, that I am changing a lot of things in and making sure that I can do certain things with certain functions/objects such as moving around class items. And I have also created the separate empty files that I will start adding and changing things that will be final or I have found to work.
 
+* I have changed the makeshift boolean type into a real bool data type and it works correctly, took out something that had to do with an enum? I looked it up and found little info but I fooled around with some things and I went through every aspect and made sure what I changed was right.
+
+* I changed the random number generator so something that uses way less code, easier to read and understand. I read the old number generator and I couldn't grasp what exactly was going on until it was literally spelled out for me on a website I found. Just uses int RanNum=rand() % Hi +1; This eliminates the need for the type conversion that happened in the old return statement.
+
+* Altered the code that used printf, found it to be more useful and clearer to understand and is used more in C++. Using the modulus and the escape sequences really threw me off and takes longer to read if it's not what you look at everyday. I changed it in several places, used in the PrintInstructions() function and changed everything in 'int main()' to use cout and cin (clearer and more with the times of C++ opposed to C). 
+*Why would you have the user input a string, and then immediately change the data type in the next line?
+*What was the reasoning behind the Random(Hi) function? Why did it have so many lines and accomplish what I did, but with 4x as much code? Was the rand() % not a thing in C?
+
+* I have multiple files that I felt that when created, it makes it easier to at least see what can go into each class. Resources, player, treasury, grains, labels(name of each player as they rise through the ranks to win the game and become king, etc. 
 
 
 
