@@ -1,48 +1,3 @@
-//**************************************
-// Name: paravia.c
-// Description:This is a port of the original TRS-80 BASIC code for Santa Paravia and Fiumaccio, (C) 1979 George Blank (used with permission).
-// By: Thomas Knox
-//
-// Inputs:N/A
-//
-// Returns:N/A
-//
-// Assumes:Should compile and run on any system with an ANSI-C compiler.
-//
-// Side Effects:N/A
-//
-//This code is copyrighted and has
-// limited warranties.Please see http://www.Planet-Source-Code.com/vb/scripts/ShowCode.asp?txtCodeId=7183&lngWId=3
-//for details.
-//**************************************
-
-/******************************************************************************
- ** **
- ** Santa Paravia & Fiumaccio. Translated from the original TRS-80 BASIC **
- ** source code into C by Thomas Knox <tknox@mac.com>.**
- ** **
- ** Original program (C) 1979 by George Blank**
- ** <gwblank@postoffice.worldnet.att.net>**
- ** **
- ******************************************************************************/
-/*
-Copyright (C) 2000 Thomas Knox
-Portions Copyright (C) 1979 by George Blank, used with permission.
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-Thomas Knox
-tknox@mac.com
-*/
-/* Declare our standard C headers. */
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -50,7 +5,10 @@ tknox@mac.com
 #include <stdlib.h>
 //#include <curses.h>
 
-#include "paravia-functions.h"
+#include "cityInfo.hpp"
+#include "grains.hpp"
+#include "player.hpp"
+#include "resources.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -110,4 +68,3 @@ int main(void)
 /* We're finished. */
     return(0);
 }
-
