@@ -5,7 +5,7 @@
 //  2-14-2018
 //========================================
 
-#include "bitfield.hpp"
+#include "DU-card.hpp"
 
 Card::Card() : bitfield(0x00)
 {}
