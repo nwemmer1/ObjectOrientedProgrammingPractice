@@ -1,0 +1,58 @@
+Object Oriented PRogramming
+		Precondition - what must be satisfied for the function to run / requirements on input
+		Postcondition - what must be returned 
+			Write function with each
+			
+		Widening/narrowing contracts- every function has a contracts
+			-explains what the function does and wat its purpose is
+				-narrow contracts - functions with this called out of contract and that dont satisfy the precondition result in undefined behavior
+				-wide contracts - they define behavior 
+					-throw an exception
+		contracts are made up of pre and post condition.
+		if you tighten the precondition, you narrow the contract
+			
+			P-->Q ^ Q-/->P
+		Are you allowed to replace a function
+			more inputs given back means that there will be a stronger output
+			strengthening by adding cases
+			
+		What does inheritance solve?
+			represents alternatives
+			
+		Containers of polymorphic objects are simple(simple fast media library, drawable, transformable)
+		Javascript goes into a script node
+		
+		webassembly- limited form of javascript that can be be used through your browser, efficient
+		
+		describe inheritance show code
+			-base class and derived class
+			
+		discriminated union- big class with single member
+			-another way to represent alternatives
+			-solves the same type of inheritance issue	
+		How do you know when to use DU over inheritance?
+			-If you dont know all the derived classes later on
+			-if you want lots of small copies of objects, you do not want to use inheritance hierarchies
+			-doesnt copy very easily
+			-garbage collection - doesnt delete anything (Java, C#)
+		Public members inherited publicly are publicly
+			-still public when you inherit its
+			-private members inherited publicly are private to the base class, cant access them period
+			-protected members inherited protected
+			-static/dynamic typeif you declare a variable the static type of the variable is type declared
+			-dynamic type of the object is whatever you call its
+			-function takes JSON value as an argument the dynamic type of the value is a string,int,bool, etc. any of those things
+		What are wedoing when we define a fcuntion virtual?
+			-the definition is provided by the derived class
+			-every overrirde in the function is in the derived class
+		Piece-wise
+			-every derived class is potentially a piece for the function
+		What is the difference between virtual function and pure virtual function?
+			-virtual function can be overwritten
+			-pure virtual function must be overwritten
+		Abstract class
+			-at least one pure virtual function 
+		
+				
+		
+1
