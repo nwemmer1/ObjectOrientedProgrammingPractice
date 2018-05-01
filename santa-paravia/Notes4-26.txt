@@ -1,0 +1,42 @@
+Notes 4/26
+
+dynamic type is the object that you actually get
+
+T min(T a, T b)
+{
+	return a< b ? a : b;
+}
+
+//object oriented version.
+
+class Comparable
+{
+	virtual bool less(Comparable& that) = 0;
+};
+
+Comparable& min (Comparable& a, Comparable& b)
+{
+	if (a.less(b))
+		return a;
+	else
+		return b;
+}
+
+int& min(int& a, int& b)
+{
+	return a < b ? a : b;
+}
+
+double& min(double& a, double& b)
+{
+	return a < b ? a : b;
+}
+
+min(0.0,3.0);
+
+
+T& min(T& a, T& b)
+{
+	
+
+}
