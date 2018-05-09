@@ -1,6 +1,6 @@
 #ifndef QUESTIONS_HPP_INCLUDED
 #define QUESTIONS_HPP_INCLUDED
-
+void PrintInstructions();
 void instructions()
 {
     char input;
@@ -69,7 +69,7 @@ int userdata()
         InitializePlayer(&MyPlayers[i], 1400, i, level, name, gender);
     }
     /* creates an array of players(7 maximum, 1 AI and the rest can be inputted)*/
-        PlayGame(MyPlayers, NumOfPlayers);
+        PlayGame(MyPlayers, NumOfPlayers,PlayersMaps);
     return 1;
 }
 #endif // QUESTIONS_HPP_INCLUDED

@@ -1,0 +1,105 @@
+May 3, 2018
+Week 15 Day 2
+Object Oriented-Programming
+
+What is abstraction?
+	protection from lower level issues
+	
+How to represent a __ in a ___ ?
+
+What is on the final?
+
+	Abstraction
+		What it means to build an abstraction
+	OOP
+		Surface level question
+	Main language features
+		Inheritance
+			representation of alternatives
+			restrict your domain
+		Virtual functions
+			piecewise definitions of functions
+				print a JSON value
+					"if x is bool" print true/false
+					"if x is null" print null
+						OVERRIDES
+					(theoretically just a table)
+			happens at run time, not compile time
+			virtual vs. pure virtual
+			virtual->else cause
+			pure virtual->no else case
+				classes are abstract
+				cannot create an object of that case/type
+	What are the main language features of generic programming?
+		Templates
+			What problems do templates solve?
+				family of algorithms/types
+				generates alternatives in oppose to representing them
+				place-holder
+				description of all of the algorithms/types
+				What does this mean?
+					We can provide different arguments at different times
+				What are you solving by making a template?
+					Multiple instances of the same code
+						keep writing the same algorithm of different type
+						eliminates redundancy
+	****answer***		reduce code duplication
+	
+		Concepts
+			What problems do concepts solve?
+				Defines whats expected by a template
+				"Almost like a base class in a hierarchy"
+					in no way a base class
+				in order to be a __type__ do A, B, and C...
+				provide constraints on temporary arguments
+				
+			Do templates solve a design problem?
+				It's an implementation problem
+					Or is it a management problem?
+
+			Do concepts solve a design problem?
+				solve a language problem
+		
+	Polymorphism
+		Dynamic
+			Virtual functions
+		What does it mean for a function to be dynamically polymorphism
+			type is determined at run-time
+		What does it mean for a function to be dynamically polymorphism
+			type is determined at compile-time
+		Why would you choose static over dynamic?
+			When do you need that decision at run-time?
+				choose dynamic only when you need the behavior to be determined at run-time
+					Examples
+						recursive data structure
+						container whos type is determined at run-time
+						memory allocation
+	
+	Substitution principles
+		Liskov's substitution
+			What is it and what is it's purpose?
+				What does it tell you?
+					If you can substitute one object of one type for another in some context, then the first is a sub-type of the second
+						Applies normally to classes
+							meant to talk about objects in OOP
+								Square/Rectangle relation example
+							Determined entirely on context
+								When can you substitute one header file for another?
+									No removal
+									Additions are fine
+									Change arguments?
+										only if they have default arguments
+									can I reorder members of a class?
+										no
+									can i add virtual functions to a class	
+										depends where
+											need to know how virtual tables work
+										can append, but not change the order
+									can i add new functions
+										yes
+									can i add new members to a class
+										maybe
+											may result in recompilation
+		Used to measure whether or not a breaking change in the implementation and design
+			measuring breakage
+			

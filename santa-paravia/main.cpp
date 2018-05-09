@@ -7,11 +7,12 @@
 //#include <curses.h>
 
 #include "player.hpp"
-#include "paravia-functions.h"
-#include "buysell.hpp"
+#include "misc-functions.hpp"
+#include "titles.hpp"
+#include "game.hpp"
 #include "treasury.hpp"
+#include "buysell.hpp"
 #include "questions.hpp"
-#
 
 using std::cout;
 using std::cin;

@@ -12,6 +12,8 @@ std::string FemaleTitles[8] = {"Lady", "Baroness", "Countess", "Marquise",
 "Duchess", "Grand Duchess", "Princess",
             "* H.R.H. Queen"};
 
+
+
 struct Player
 {
 public:
@@ -107,32 +109,89 @@ void Player::ImDead()
     IsDead = 1;
     std::cout << "\n(Press ENTER): ";
     std::cin.ignore();
-
-
-
-
-
 }
 class paraviamap : public Player
 {
-private:
-
 public:
     void DrawMap();
+    void ChangeMap(int);
 };
+void paraviamap::ChangeMap(int building)
+{
+        if(building==1)
+            Cathedral += 1;
+        if(building==2)
+            Mills += 1;
+        if(building==3)
+            Marketplaces += 1;
+        if(building==4)
+            Palace += 1;
+}
 void paraviamap::DrawMap()
 {
-    if(Cathedral==1)
-        std::cout << "Cathedral is owned";
-        std::cout << "----Cathedral-----";
-    if(Mills==1)
-        std::cout << "Mill is owned";
-        std::cout << "-------Mill-------";
-    if(Marketplaces==1)
-        std::cout << "Market is owned.";
-        std::cout << "-------Market-----";
-    if(Palace==1)
-        std::cout << "Palace is owned.";
-        std::cout << "-------Palace-----";
+    if(Cathedral>=0)
+        std::cout << "-----Cathedral------"
+                  << "    _|_           \n"
+                  << "     |            \n"
+                  << "    _|_           \n"
+                  << "   //_/\          \n"
+                  << " __|  ||____      \n"
+                  << "////////////\     \n"
+                  << "/////////////\\   \n"
+                  << "|^^^^^^^^^^||+|   \n"
+                  << "|  # # #   ||||   \n"
+                  << "....    .....     \n"
+                  << "||||||||||||||||| \n"
+                  << "ALL ART IS TAKEN FROM https://textart.io/art/";
+
+
+
+
+    if(Mills>=0)
+        std::cout << "---------Mill--------\n"
+                  << "       /\     /\     \n"
+                  << "      '. \   / ,'    \n"
+                  << "        `.\-/,'      \n"
+                  << "         ( X   )     \n"
+                  << "        ,'/ \`.\     \n"
+                  << "      .' /   \ `,    \n"
+                  << "       \/-----\/'    \n"
+                  << " ______ |__H__|______\n"
+                  << "ALL ART IS TAKEN FROM https://textart.io/art/";
+
+    if(Marketplaces>=0)
+        std::cout << "----------------------Market--------------------\n"
+                  << "      _._._._    ^  _._._._       _._._._ ^     \n"
+                  << "      | ___ |_._._._| ___ |_._._._| ___ |       \n"
+                  << "      | |_| |  ___  | |_| |  ___  | |_| |       \n"
+                  << "      |_III_|  |_|  |_III_|  |_|  |_III_| ^!^   \n"
+                  << "^     | ___ |__III__| ___ |__III__| ___ |       \n"
+                  << "   ^  | |_| |  ___  | |_| |  ___  | |_| |   ^!^ \n"
+                  << "      |_III_|  |_|  |_III_|  |_|  |_III_|       \n"
+                  << "      | ___ |__III__| ___ |__III__| ___ | _)o(_ \n"
+                  << "      | |_| |  ___  | |_| |  ___  | |_| | /(|)\ \n"
+                  << "  /)  |_III_|  |_|  |_III_|  |_|  |_III_|   H   \n"
+                  << "_/ )  | ___ |__III__|_____|__III__| ___ |   H   \n"
+                  << "~^~^~ | |_| |'''''''||~|~||'''''''| |_| |   H   \n"
+                  << "   ^~'|_III_|@@@@@@@||_|_||@@@@@@@|_III_|^~^H ' \n"
+                  << " @@@@@@@@@@@@@@     @/=====\@     @@@@@@@@@@@@@@\n"
+                  << "ALL ART IS TAKEN FROM https://textart.io/art/ \n\n";
+
+    if(Palace>=0)
+        std::cout << "----------------Palace-------------------\n"
+                  << "                        /^\              \n"
+                  << "                        | |              \n"
+                  << "                        |-|              \n"
+                  << "                   /^\  | |              \n"
+                  << "            /^\  / [_] \+-+              \n"
+                  << "            |---||-------| |             \n"
+                  << "  _/^\_    _/^\_|  [_]  |_/^\_   _/^\_   \n"
+                  << "  |___|    |___||_______||___|   |___|   \n"
+                  << "   | |======| |===========| |=====| |    \n"
+                  << "   | |      | |    /^\    | |     | |    \n"
+                  << "   | |      | |   |   |   | |     | |    \n"
+                  << "   |_|______|_|__ |   |___|_|_____|_|    \n"
+                  << "ALL ART IS TAKEN FROM https://textart.io/art/";
+
 }
 #endif // PLAYER_HPP_INCLUDED

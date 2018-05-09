@@ -1,12 +1,12 @@
 #ifndef ACTIONS_HPP_INCLUDED
 #define ACTIONS_HPP_INCLUDED
 /*These are all of the functions that have something to do with buying something*/
-void BuyCathedral(player *);
+void BuyCathedral(player *,paraviamap *);
 void BuyGrain(player *);
 void BuyLand(player *);
-void BuyMarket(player *);
-void BuyMill(player *);
-void BuyPalace(player *);
+void BuyMarket(player *, paraviamap *);
+void BuyMill(player *, paraviamap *);
+void BuyPalace(player *, paraviamap *);
 void BuySoldiers(player *);
 void BuySellGrain(player *);
 /*These are all the functions that have to do with selling or printing out what was sold */
@@ -45,12 +45,14 @@ void BuySellGrain(player *Me)
             SellLand(Me);
     }
 }
-void BuyCathedral(player *Me)
+void BuyCathedral(player *Me, paraviamap *mpmap)
 {
     Me->Cathedral += 1;
     Me->Clergy += Random(6);
     Me->Treasury -= 5000;
     Me->PublicWorks += 1.0;
+
+    mpmap->ChangeMap(1);
 }
 
 void BuyGrain(player *Me)
@@ -82,27 +84,32 @@ void BuyLand(player *Me)
     Me->Treasury -= (int)(((float)HowMuch * Me->LandPrice));
 
 }
-void BuyMarket(player *Me)
+void BuyMarket(player *Me, paraviamap *mpmap)
 {
     Me->Marketplaces += 1;
     Me->Merchants += 5;
     Me->Treasury -= 1000;
     Me->PublicWorks += 1.0;
+    mpmap->ChangeMap(3);
 }
 
-void BuyMill(player *Me)
+void BuyMill(player *Me, paraviamap *mpmap)
 {
     Me->Mills += 1;
     Me->Treasury -= 2000;
     Me->PublicWorks += 0.25;
+
+    mpmap->ChangeMap(2);
 }
 
-void BuyPalace(player *Me)
+void BuyPalace(player *Me, paraviamap *mpmap)
 {
     Me->Palace += 1;
     Me->Nobles += Random(2);
     Me->Treasury -= 3000;
     Me->PublicWorks += 0.5;
+
+    mpmap->ChangeMap(4);
 }
 
 void BuySoldiers(player *Me)

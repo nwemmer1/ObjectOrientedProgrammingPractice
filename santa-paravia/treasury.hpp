@@ -1,6 +1,64 @@
 #ifndef TREASURY_HPP_INCLUDED
 #define TREASURY_HPP_INCLUDED
 
+void GenerateIncome(player *);
+void SeizeAssets(player *);
+void AddRevenue(player *);
+
+
+void AddRevenue(player *Me)
+{
+    Me->Treasury += (Me->JusticeRevenue + Me->CustomsDutyRevenue);
+    Me->Treasury += (Me->IncomeTaxRevenue + Me->SalesTaxRevenue);
+/* Penalize deficit spending. */
+    if(Me->Treasury < 0)
+        Me->Treasury = (int)((float)Me->Treasury * 1.5);
+/* Will a title make the creditors happy (for now)? */
+    if(Me->Treasury < (-10000 * Me->TitleNum))
+    Me->IsBankrupt = 1;
+}
+
+
+void NewLandAndGrainPrices(player *Me)
+{
+    float x, y, MyRandom;
+    int h;
+/* Generate an offset for use in later int->float conversions. */
+    MyRandom = (float)((float)rand() / (float)RAND_MAX);
+/* If you think this C code is ugly, you should see the original BASIC. */
+    x = (float)Me->Land;
+    y = (((float)Me->Serfs - (float)Me->Mills) * 100.0) * 5.0;
+    if(y < 0.0)
+        y = 0.0;
+    if(y < x)
+        x = y;
+    y = (float)Me->GrainReserve * 2.0;
+    if(y < x)
+        x = y;
+    y = (float)Me->Harvest + (MyRandom - 0.5);
+    h = (int)(x * y);
+    Me->GrainReserve += h;
+    Me->GrainDemand = (Me->Nobles * 100) + (Me->Cathedral * 40) + (Me->Merchants * 30);
+    Me->GrainDemand += ((Me->Soldiers * 10) + (Me->Serfs * 5));
+    Me->LandPrice = (3.0 * (float)Me->Harvest + (float)Random(6) + 10.0) / 10.0;
+    if(h < 0)
+        h *= -1;
+    if(h < 1)
+    y = 2.0;
+    else
+    {
+        y = (float)((float)Me->GrainDemand / (float)h);
+        if(y > 2.0)
+            y = 2.0;
+    }
+    if(y < 0.8)
+        y = 0.8;
+    Me->LandPrice *= y;
+    if(Me->LandPrice < 1.0) Me->LandPrice = 1.0;
+        Me->GrainPrice = (int)(((6.0 - (float)Me->Harvest) * 3.0 + (float)Random(5) + (float)Random(5)) * 4.0 * y);
+    Me->RatsAte = h;
+}
+
 
 void GenerateIncome(player *Me)
 {
@@ -110,7 +168,7 @@ void AdjustTax(player *Me)
         SeizeAssets(Me);
 }
 
-void StatePurchases(player *Me, int HowMany, player MyPlayers[6])
+void StatePurchases(player *Me, int HowMany, player MyPlayers[6], paraviamap *mpmap)
 {
     char string[256];
     int val = 1;
@@ -129,10 +187,10 @@ void StatePurchases(player *Me, int HowMany, player MyPlayers[6])
         std::cin >> val;
         switch(val)
         {
-            case 1: BuyMarket(Me); break;
-            case 2: BuyMill(Me); break;
-            case 3: BuyPalace(Me); break;
-            case 4: BuyCathedral(Me); break;
+            case 1: BuyMarket(Me, mpmap); break;
+            case 2: BuyMill(Me, mpmap); break;
+            case 3: BuyPalace(Me, mpmap); break;
+            case 4: BuyCathedral(Me, mpmap); break;
             case 5: BuySoldiers(Me); break;
             case 6: ShowStats(MyPlayers, HowMany);
         }
