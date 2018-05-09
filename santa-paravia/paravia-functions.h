@@ -1,4 +1,7 @@
-#pragma once
+
+#ifndef PARAVIA-FUNCTIONS_HPP_INCLUDED
+#define PARAVIA-FUNCTIONS_HPP_INCLUDED
+#include "buysell.hpp"
 /*
 ======================================================================================
 ====My reasoning for this poorly named and used file is to start to get more of   ====
@@ -14,123 +17,31 @@
 //this was taken out completely, and changed to use a bool type, not a
 //makeshift boolean emulation. Less code/less confusion/current/faster?
 using std::cout;
-struct Player
-{
-public:
-    int Cathedral, Clergy, CustomsDuty, CustomsDutyRevenue, DeadSerfs;
-    int Difficulty, FleeingSerfs, GrainDemand, GrainPrice, GrainReserve;
-    int Harvest, IncomeTax, IncomeTaxRevenue, RatsAte;
-    int Justice, JusticeRevenue, Land, Marketplaces, MarketRevenue;
-    int Merchants, MillRevenue, Mills, NewSerfs, Nobles, OldTitle, Palace;
-    int Rats, SalesTax, SalesTaxRevenue, Serfs, SoldierPay, Soldiers, TitleNum;
-    int TransplantedSerfs, Treasury, WhichPlayer, Year, YearOfDeath;
-    char City[15], Name[25], Title[15];
-    float PublicWorks, LandPrice;
-    bool InvadeMe, IsBankrupt, IsDead, IWon, MaleOrFemale, NewTitle;
-private:
-
-} Player;
-
-typedef struct Player player;
-/* Declare our list of cities. */
-char CityList[7][15] = {"Santa Paravia", "Fiumaccio", "Torricella", "Molinetto",
-"Fontanile", "Romanga", "Monterana"};
-/* Declare our male titles. */
-char MaleTitles[8][15] = {"Sir", "Baron", "Count", "Marquis", "Duke",
- "Grand Duke", "Prince", "* H.R.H. King"};
-/* Declare our female titles. */
-char FemaleTitles[8][15] = {"Lady", "Baroness", "Countess", "Marquise",
-"Duchess", "Grand Duchess", "Princess",
-            "* H.R.H. Queen"};
 /* Our prototypes. */
-
 int Random(int);
 void InitializePlayer(player*, int, int, int, char*, bool);
 void AddRevenue(player *);
 int AttackNeighbor(player *, player *);
-void BuyCathedral(player *);
-void BuyGrain(player *);
-void BuyLand(player *);
-void BuyMarket(player *);
-void BuyMill(player *);
-void BuyPalace(player *);
-void BuySoldiers(player *);
 int limit10(int, int);
 bool CheckNewTitle(player *);
 void GenerateHarvest(player *);
 void GenerateIncome(player *);
 void ChangeTitle(player *);
 void NewLandAndGrainPrices(player *);
-void PrintGrain(player *);
 int ReleaseGrain(player *);
 void SeizeAssets(player *);
-void SellGrain(player *);
-void SellLand(player *);
 void SerfsDecomposing(player *, float);
 void SerfsProcreating(player *, float);
 void PrintInstructions(void);
 void PlayGame(player [], int);
 void NewTurn(player *, int, player [], player *);
-void BuySellGrain(player *);
 void AdjustTax(player *);
 void DrawMap(player *);
 void StatePurchases(player *, int, player []);
 void ShowStats(player [], int);
 void ImDead(player *);
 //******************************************************************************
-/******************************************************************************
- ** This function will take a parameter Hi and return a random integer**
- ** between 0 and Hi.**
- ******************************************************************************/
-int Random(int Hi)  //shortened and simplified the random number generation function
-{
-    int RanNum=rand() % Hi +1;
-    return(RanNum);
-}
 
-//initializing function
-void InitializePlayer(player *Me, int year, int city, int level, char *name, bool gender)
-{
-/* This is pretty straightforward. */
-    Me->Cathedral = 0;
-    strcpy(Me->City, CityList[city]);
-    Me->Clergy = 5;
-    Me->CustomsDuty = 25;
-    Me->Difficulty = level;
-    Me->GrainPrice = 25;
-    Me->GrainReserve = 5000;
-    Me->IncomeTax = 5;
-    Me->IsBankrupt = 0;
-    Me->IsDead = 0;
-    Me->IWon = 0;
-    Me->Justice = 2;
-    Me->Land = 10000;
-    Me->LandPrice = 10.0;
-    Me->MaleOrFemale = gender;
-    Me->Marketplaces = 0;
-    Me->Merchants = 25;
-    Me->Mills = 0;
-    strcpy(Me->Name, name);
-    Me->Nobles = 4;
-    Me->OldTitle = 1;
-    Me->Palace = 0;
-    Me->PublicWorks = 1.0;
-    Me->SalesTax = 10;
-    Me->Serfs = 2000;
-    Me->Soldiers = 25;
-    Me->TitleNum = 1;
-    if(Me->MaleOrFemale == 1)
-        strcpy(Me->Title, MaleTitles[0]);
-    else
-        strcpy(Me->Title, FemaleTitles[0]);
-    if(city == 6)
-        strcpy(Me->Title, "Baron");
-    Me->Treasury = 1000;
-    Me->WhichPlayer = city;
-    Me->Year = year;
-    Me->YearOfDeath = year + 20 + Random(35);
-    return;
-}
 void AddRevenue(player *Me)
 {
     Me->Treasury += (Me->JusticeRevenue + Me->CustomsDutyRevenue);
@@ -141,9 +52,7 @@ void AddRevenue(player *Me)
 /* Will a title make the creditors happy (for now)? */
     if(Me->Treasury < (-10000 * Me->TitleNum))
     Me->IsBankrupt = 1;
-    return;
 }
-
 
 int AttackNeighbor(player *Me, player *Him)
 {
@@ -163,85 +72,10 @@ int AttackNeighbor(player *Me, player *Him)
     if(deadsoldiers > (Him->Soldiers - 15))
         deadsoldiers = Him->Soldiers - 15;
     Him->Soldiers -= deadsoldiers;
-    printf("%s %s loses %d soldiers in battle.\n", Him->Title, Him->Name, deadsoldiers);
+    std::cout << Him->Title << " " << Him->Name << " loses " << deadsoldiers << " soldiers in battle.\n";
     return(LandTaken);
 }
-void BuyCathedral(player *Me)
-{
-    Me->Cathedral += 1;
-    Me->Clergy += Random(6);
-    Me->Treasury -= 5000;
-    Me->PublicWorks += 1.0;
-    return;
-}
 
-void BuyGrain(player *Me)
-{
-    char string[256];
-    int HowMuch;
-    printf("How much grain do you want to buy (0 to specify a total)? ");
-    fgets(string, 255, stdin);
-    HowMuch = (int)atoi(string);
-    if(HowMuch == 0)
-    {
-        printf("How much total grain do you wish? ");
-        fgets(string, 255, stdin);
-        HowMuch = (int)atoi(string);
-        HowMuch -= Me->GrainReserve;
-        if(HowMuch < 0)
-        {
-            printf("Invalid total amount.\n\n");
-            return;
-        }
-    }
-    Me->Treasury -= (HowMuch * Me->GrainPrice / 1000);
-    Me->GrainReserve += HowMuch;
-    return;
-}
-
-void BuyLand(player *Me)
-{
-    char string[256];
-    int HowMuch;
-    printf("How much land do you want to buy? ");
-    fgets(string, 255, stdin);
-    HowMuch = (int)atoi(string);
-    Me->Land += HowMuch;
-    Me->Treasury -= (int)(((float)HowMuch * Me->LandPrice));
-    return;
-}
-void BuyMarket(player *Me)
-{
-    Me->Marketplaces += 1;
-    Me->Merchants += 5;
-    Me->Treasury -= 1000;
-    Me->PublicWorks += 1.0;
-    return;
-}
-
-void BuyMill(player *Me)
-{
-    Me->Mills += 1;
-    Me->Treasury -= 2000;
-    Me->PublicWorks += 0.25;
-    return;
-}
-
-void BuyPalace(player *Me)
-{
-    Me->Palace += 1;
-    Me->Nobles += Random(2);
-    Me->Treasury -= 3000;
-    Me->PublicWorks += 0.5;
-    return;
-}
-
-void BuySoldiers(player *Me)
-{
-    Me->Soldiers += 20;
-    Me->Serfs -= 20;
-    Me->Treasury -= 500;
-}
 
 int limit10(int num, int denom)
 {
@@ -276,7 +110,7 @@ bool CheckNewTitle(player *Me)
     {
         Me->OldTitle = Me->TitleNum;
         ChangeTitle(Me);
-        printf("\aGood news! %s has achieved the rank of %s\n\n", Me->Name,Me->Title);
+        std::cout << "\aGood news! " << Me->Name << " has achieved the rank of " << Me->Title << "\n\n";
         return(1);
     }
     Me->TitleNum = Me->OldTitle;
@@ -288,58 +122,20 @@ void GenerateHarvest(player *Me)
     Me->Harvest = (Random(5) + Random(6)) / 2;
     Me->Rats = Random(50);
     Me->GrainReserve = ((Me->GrainReserve * 100) - (Me->GrainReserve * Me->Rats)) / 100;
-    return;
 }
 
-void GenerateIncome(player *Me)
-{
-    float y;
-    int revenues = 0;
-    char string[256];
-    Me->JusticeRevenue = (Me->Justice * 300 - 500) * Me->TitleNum;
-    switch(Me->Justice)
-    {
-        case 1: strcpy(string, "Very Fair"); break;
-        case 2: strcpy(string, "Moderate"); break;
-        case 3: strcpy(string, "Harsh"); break;
-        case 4: strcpy(string, "Outrageous");
-    }
-    y = 150.0 - (float)Me->SalesTax - (float)Me->CustomsDuty - (float)Me->IncomeTax;
-    if(y < 1.0)
-        y = 1.0;
-    y /= 100.0;
-    Me->CustomsDutyRevenue = Me->Nobles * 180 + Me->Clergy * 75 + Me->Merchants * 20 * y;
-    Me->CustomsDutyRevenue += (int)(Me->PublicWorks * 100.0);
-    Me->CustomsDutyRevenue = (int)((float)Me->CustomsDuty / 100.0 * (float)Me->CustomsDutyRevenue);
-    Me->SalesTaxRevenue = Me->Nobles * 50 + Me->Merchants * 25 + (int)(Me->PublicWorks * 10.0);
-    Me->SalesTaxRevenue *= (y * (5 - Me->Justice) * Me->SalesTax);
-    Me->SalesTaxRevenue /= 200;
-    Me->IncomeTaxRevenue = Me->Nobles * 250 + (int)(Me->PublicWorks * 20.0);
-    Me->IncomeTaxRevenue += (10 * Me->Justice * Me->Nobles * y);
-    Me->IncomeTaxRevenue *= Me->IncomeTax;
-    Me->IncomeTaxRevenue /= 100;
-    revenues = Me->CustomsDutyRevenue + Me->SalesTaxRevenue +
-    Me->IncomeTaxRevenue + Me->JusticeRevenue;
-    printf("State revenues %d gold florins.\n", revenues);
-    printf("Customs Duty\tSales Tax\tIncome Tax\tJustice\n");
-    printf("%d\t\t%d\t\t%d\t\t%d %s\n", Me->CustomsDutyRevenue,
-        Me->SalesTaxRevenue, Me->IncomeTaxRevenue,
-        Me->JusticeRevenue, string);
-    return;
-}
+
 
 void ChangeTitle(player *Me)
 {
     if(Me->MaleOrFemale == 1)
-        strcpy(Me->Title, MaleTitles[Me->TitleNum]);
+        Me->Title = MaleTitles[Me->TitleNum];
     else
-        strcpy(Me->Title, FemaleTitles[Me->TitleNum]);
+        Me->Title = FemaleTitles[Me->TitleNum];
     if(Me->TitleNum == 7)
     {
         Me->IWon = 1;
-        return;
     }
-    return;
 }
 
 void NewLandAndGrainPrices(player *Me)
@@ -380,22 +176,9 @@ void NewLandAndGrainPrices(player *Me)
     if(Me->LandPrice < 1.0) Me->LandPrice = 1.0;
         Me->GrainPrice = (int)(((6.0 - (float)Me->Harvest) * 3.0 + (float)Random(5) + (float)Random(5)) * 4.0 * y);
     Me->RatsAte = h;
-    return;
 }
 
-void PrintGrain(player *Me)
-{
-    switch(Me->Harvest)
-    {
-        case 0:
-        case 1: printf("Drought. Famine Threatens. "); break;
-        case 2: printf("Bad Weather. Poor Harvest. "); break;
-        case 3: printf("Normal Weather. Average Harvest. "); break;
-        case 4: printf("Good Weather. Fine Harvest. "); break;
-        case 5: printf("Excellent Weather. Great Harvest! "); break;
-    }
-    return;
-}
+
 
 int ReleaseGrain(player *Me)
 {
@@ -409,23 +192,24 @@ int ReleaseGrain(player *Me)
     Maximum = (Me->GrainReserve - Minimum);
     while(IsOK == 0)
     {
-        printf("How much grain will you release for consumption?\n");
-        printf("1 = Minimum (%d), 2 = Maximum(%d), or enter a value: ", Minimum, Maximum);
-        fgets(string, 255, stdin);
-        HowMuch = (int)atoi(string);
+        std::cout << "How much grain will you release for consumption?\n";
+        std::cout << "1 = Minimum (" << Minimum << "), 2 = Maximum(" << Maximum << "), or enter a value: ";
+        std::cin >> HowMuch;
         if(HowMuch == 1)
             HowMuch = Minimum;
         if(HowMuch == 2)
             HowMuch = Maximum;
 /* Are we being a Scrooge? */
         if(HowMuch < Minimum)
-            printf("You must release at least 20%% of your reserves.\n");
+            std::cout << "You must release at least 20%% of your reserves.\n";
 /* Whoa. Slow down there son. */
         else if(HowMuch > Maximum)
-            printf("You must keep at least 20%%.\n");
+            std::cout << "You must keep at least 20%%.\n";
         else
             IsOK = 1;
     }
+
+
     Me->SoldierPay = Me->MarketRevenue = Me->NewSerfs = Me->DeadSerfs = 0;
     Me->TransplantedSerfs = Me->FleeingSerfs = 0;
     Me->InvadeMe = 0;
@@ -458,17 +242,24 @@ int ReleaseGrain(player *Me)
         SerfsProcreating(Me, 3.0);
         SerfsDecomposing(Me, xp + 8.0);
     }
+
     else
     {
         SerfsProcreating(Me, 7.0);
         SerfsDecomposing(Me, 3.0);
+
+
         if((Me->CustomsDuty + Me->SalesTax) < 35)
+        {
             Me->Merchants += Random(4);
+        }
+
         if(Me->IncomeTax < Random(28))
         {
             Me->Nobles += Random(2);
             Me->Clergy += Random(3);
         }
+
         if(HowMuch > (int)((float)Me->GrainDemand * 1.3))
         {
             zp = (double)Me->Serfs / 1000.0;
@@ -477,7 +268,7 @@ int ReleaseGrain(player *Me)
             z += (float)Random(40);
             Me->TransplantedSerfs = (int)z;
             Me->Serfs += Me->TransplantedSerfs;
-            printf("%d serfs move to the city\n", Me->TransplantedSerfs);
+            std::cout << Me->TransplantedSerfs << " serfs move to the city\n";
             zp = (double)z;
             z = ((float)zp * (float)rand()) / (float)RAND_MAX;
             if(z > 50.0)
@@ -493,25 +284,25 @@ int ReleaseGrain(player *Me)
         Me->JusticeRevenue = Random(Me->JusticeRevenue);
         Me->Serfs -= Me->JusticeRevenue;
         Me->FleeingSerfs = Me->JusticeRevenue;
-        printf("%d serfs flee harsh justice\n", Me->FleeingSerfs);
+        std::cout << Me->FleeingSerfs << " serfs flee harsh justice\n";
     }
     Me->MarketRevenue = Me->Marketplaces * 75;
     if(Me->MarketRevenue > 0)
     {
         Me->Treasury += Me->MarketRevenue;
-        printf("Your market earned %d florins.\n", Me->MarketRevenue);
+        std::cout << "Your market earned " << Me->MarketRevenue << " florins.\n";
     }
     Me->MillRevenue = Me->Mills * (55 + Random(250));
     if(Me->MillRevenue > 0)
     {
         Me->Treasury += Me->MillRevenue;
-        printf("Your woolen mill earned %d florins.\n", Me->MillRevenue);
+        std::cout << "Your woolen mill earned " << Me->MillRevenue << " florins.\n";
     }
     Me->SoldierPay = Me->Soldiers * 3;
     Me->Treasury -= Me->SoldierPay;
-    printf("You paid your soldiers %d florins.\n", Me->SoldierPay);
-    printf("You have %d serfs in your city.\n", Me->Serfs);
-    printf("(Press ENTER): ");
+    std::cout << "You paid your soldiers " << Me->SoldierPay << " florins.\n";
+    std::cout << "You have " << Me->Serfs << " serfs in your city.\n";
+    std::cout << "(Press ENTER): ";
     fgets(string, 255, stdin);
     if((Me->Land / 1000) > Me->Soldiers)
     {
@@ -527,68 +318,14 @@ int ReleaseGrain(player *Me)
 }
 
 
-void SeizeAssets(player *Me)
-{
-    char string[256];
-    Me->Marketplaces = 0;
-    Me->Palace = 0;
-    Me->Cathedral = 0;
-    Me->Mills = 0;
-    Me->Land = 6000;
-    Me->PublicWorks = 1.0;
-    Me->Treasury = 100;
-    Me->IsBankrupt = 0;
-    printf("\n\n%s %s is bankrupt.\n", Me->Title, Me->Name);
-    printf("\nCreditors have seized much of your assets.\n");
-    printf("\n(Press ENTER): ");
-    fgets(string, 255, stdin);
-    return;
-}
-
-void SellGrain(player *Me)
-{
-    char string[256];
-    int HowMuch;
-    printf("How much grain do you want to sell? ");
-    fgets(string, 255, stdin);
-    HowMuch = (int)atoi(string);
-    if(HowMuch > Me->GrainReserve)
-    {
-        printf("You don't have it.\n");
-        return;
-    }
-    Me->Treasury += (HowMuch * Me->GrainPrice / 1000);
-    Me->GrainReserve -= HowMuch;
-    return;
-}
-
-void SellLand(player *Me)
-{
-    char string[256];
-    int HowMuch;
-    printf("How much land do you want to sell? ");
-    fgets(string, 255, stdin);
-    HowMuch = (int)atoi(string);
-    if(HowMuch > (Me->Land - 5000))
-    {
-        printf("You can't sell that much\n");
-        return;
-    }
-    Me->Land -= HowMuch;
-    Me->Treasury += (int)(((float)HowMuch * Me->LandPrice));
-    return;
-}
-
 void SerfsDecomposing(player *Me, float MyScale)
 {
-    int absc;
-    float ord;
-    absc = (int)MyScale;
-    ord = MyScale - (float)absc;
+    int absc =(int)MyScale;
+    float ord = MyScale - (float)absc;
+
     Me->DeadSerfs = (int)((((float)Random(absc) + ord) * (float)Me->Serfs) / 100.0);
     Me->Serfs -= Me->DeadSerfs;
-    printf("%d serfs die this year.\n", Me->DeadSerfs);
-    return;
+    std::cout << Me->DeadSerfs << " serfs die this year.\n";
 }
 
 void SerfsProcreating(player *Me, float MyScale)
@@ -599,37 +336,16 @@ void SerfsProcreating(player *Me, float MyScale)
     ord = MyScale - (float)absc;
     Me->NewSerfs = (int)((((float)Random(absc) + ord) * (float)Me->Serfs) / 100.0);
     Me->Serfs += Me->NewSerfs;
-    printf("%d serfs born this year.\n", Me->NewSerfs);
-    return;
+    std::cout << Me->NewSerfs << " serfs born this year.\n";
+
 }
 
-void PrintInstructions(void)
-{
-    char string[256];
-
-    cout << "Santa Paravia and Fiumaccio\n\n"
-         << "You are the ruler of a 15th century Italian city state.\n"
-         << "If you rule well, you will receive higher titles. The\n"
-         << "first player to become king or queen wins. Life expectancy\n"
-         << "then was brief, so you may not live long enough to win.\n"
-         << "The computer will draw a map of your state. The size\n"
-         << "of the area in the wall grows as you buy more land. The\n"
-         << "size of the guard tower in the upper left corner shows\n"
-         << "the adequacy of your defenses. If it shrinks, equip more\n"
-         << "soldiers! If the horse and plowman is touching the top of the wall,\n"
-         << "all your land is in production. Otherwise you need more\n"
-         << "serfs, who will migrate to your state if you distribute\n"
-         << "more grain than the minimum demand. If you distribute less\n"
-         << "grain, some of your people will starve, and you will have\n"
-         << "a high death rate. High taxes raise money, but slow down\n"
-         << "economic growth. (Press ENTER to begin game)\n";
-    fgets(string, 255, stdin);
-    return;
-}
 void PlayGame(player MyPlayers[6], int NumOfPlayers)
 {
+    void InitializePlayer(player*, int, int, int, std::string, bool);
     bool AllDead, Winner;
-    int i, WinningPlayer = 0;
+    int i;
+    int WinningPlayer = 0;
     player Baron;
     AllDead = 0;
     Winner = 0;
@@ -652,11 +368,9 @@ void PlayGame(player MyPlayers[6], int NumOfPlayers)
     }
     if(AllDead == 1)
     {
-        printf("The game has ended.\n");
-        return;
+        std::cout << "The game has ended.\n";
     }
-    printf("Game Over. %s %s wins.\n", MyPlayers[WinningPlayer].Title, MyPlayers[WinningPlayer].Name);
-    return;
+    std::cout << "Game Over. " << MyPlayers[WinningPlayer].Title << MyPlayers[WinningPlayer].Name << " wins.\n";
 }
 
 void NewTurn(player *Me, int HowMany, player MyPlayers[6], player *Baron)
@@ -679,150 +393,25 @@ void NewTurn(player *Me, int HowMany, player MyPlayers[6], player *Baron)
             AttackNeighbor(Baron, Me);
     }
     AdjustTax(Me);
-    DrawMap(Me);
+    //DrawMap(Me);
     StatePurchases(Me, HowMany, MyPlayers);
     CheckNewTitle(Me);
 
     Me->Year++;
     if(Me->Year == Me->YearOfDeath)
-        ImDead(Me);
+    {
+        Me->ImDead();
+    }
     if(Me->TitleNum >= 7)
         Me->IWon = 1;
 }
-void BuySellGrain(player *Me)
-{
-    bool Finished;
-    char string[256];
-    Finished = 0;
-    while(Finished == 0)
-    {
-        printf("\nYear %d\n", Me->Year);
-        printf("\n%s %s\n\n", Me->Title, Me->Name);
-        printf("Rats ate %d%% of your grain reserves.\n", Me->Rats);
-        PrintGrain(Me);
-        printf("(%d steres)\n\n", Me->RatsAte);
-        printf("Grain\tGrain\tPrice of\tPrice of\tTreasury\n");
-        printf("Reserve\tDemand\tGrain\t\tLand\n");
-        printf("%d\t%d\t%d\t\t%.2f\t\t%d\n", Me->GrainReserve,
-            Me->GrainDemand, Me->GrainPrice, Me->LandPrice,
-            Me->Treasury);
-        printf("steres\tsteres\t1000 st.\thectare\t\tgold florins\n");
-        printf("\nYou have %d hectares of land.\n", Me->Land);
-        printf("\n1. Buy grain, 2. Sell grain, 3. Buy land,");
-        printf(" 4. Sell land\n(Enter q to continue): ");
-        fgets(string, 255, stdin);
-        if(string[0] == 'q')
-            Finished = 1;
-        if(string[0] == '1')
-            BuyGrain(Me);
-        if(string[0] == '2')
-            SellGrain(Me);
-        if(string[0] == '3')
-            BuyLand(Me);
-        if(string[0] == '4')
-            SellLand(Me);
-    }
-    return;
-}
-void AdjustTax(player *Me)
-{
-    char string[256];
-    int val = 1, duty = 0;
-    string[0] = '\0';
-    while(val != 0 || string[0] != 'q')
-    {
-        printf("\n%s %s\n\n", Me->Title, Me->Name);
-        GenerateIncome(Me);
-        printf("(%d%%)\t\t(%d%%)\t\t(%d%%)",
-                Me->CustomsDuty, Me->SalesTax,
-                Me->IncomeTax);
-    printf("\n1. Customs Duty, 2. Sales Tax, 3. Wealth Tax, ");
-        printf("4. Justice\n");
-        printf("Enter tax number for changes, q to continue: ");
-        fgets(string, 255, stdin);
-        val = (int)atoi(string);
-        switch(val)
-        {
-            case 1: printf("New customs duty (0 to 100): ");
-                fgets(string, 255, stdin);
-                duty = (int)atoi(string);
-                if(duty > 100) duty = 100;
-                if(duty < 0) duty = 0;
-                Me->CustomsDuty = duty;
-                break;
-            case 2: printf("New sales tax (0 to 50): ");
-                fgets(string, 255, stdin);
-                duty = (int)atoi(string);
-                if(duty > 50) duty = 50;
-                if(duty < 0) duty = 0;
-                Me->SalesTax = duty;
-                break;
-            case 3: printf("New wealth tax (0 to 25): ");
-                fgets(string, 255, stdin);
-                duty = (int)atoi(string);
-                if(duty > 25) duty = 25;
-                if(duty < 0) duty = 0;
-                Me->IncomeTax = duty;
-                break;
-            case 4: printf("Justice: 1. Very fair, 2. Moderate");
-                printf(" 3. Harsh, 4. Outrageous: ");
-                fgets(string, 255, stdin);
-                duty = (int)atoi(string);
-                if(duty > 4) duty = 4;
-                if(duty < 1) duty = 1;
-                Me->Justice = duty;
-                break;
-        }
 
-    }
-    AddRevenue(Me);
-    if(Me->IsBankrupt == 1)
-    SeizeAssets(Me);
-}
-void DrawMap(player *Me)
-{
-    /* Not implemented yet. */
-    return;
-}
-void StatePurchases(player *Me, int HowMany, player MyPlayers[6])
-{
-    char string[256];
-    int val = 1;
-    string[0] = '\0';
-    while(val != 0 || string[0] != 'q')
-    {
-    printf("\n\n%s %s\nState purchases.\n", Me->Title, Me->Name);
-        printf("\n1. Marketplace (%d)\t\t\t\t1000 florins\n",
-                Me->Marketplaces);
-        printf("2. Woolen mill (%d)\t\t\t\t2000 florins\n",
-                Me->Mills);
-        printf("3. Palace (partial) (%d)\t\t\t\t3000 florins\n",
-                Me->Palace);
-        printf("4. Cathedral (partial) (%d)\t\t\t5000 florins\n",
-                Me->Cathedral);
-    printf("5. Equip one platoon of serfs as soldiers\t500 florins\n");
-        printf("\nYou have %d gold florins.\n", Me->Treasury);
-        printf("\nTo continue, enter q. To compare standings, enter 6\n");
-        printf("Your choice: ");
-        fgets(string, 255, stdin);
-        val = (int)atoi(string);
-        switch(val)
-        {
-            case 1: BuyMarket(Me); break;
-            case 2: BuyMill(Me); break;
-            case 3: BuyPalace(Me); break;
-            case 4: BuyCathedral(Me); break;
-            case 5: BuySoldiers(Me); break;
-            case 6: ShowStats(MyPlayers, HowMany);
-        }
-    }
-    return;
-}
+
 void ShowStats(player MyPlayers[6], int HowMany)
 {
     int i = 0;
     char string[256];
-    printf("Nobles\tSoldiers\tClergy\tMerchants\tSerfs\tLand\tTreasury\n");
+    std::cout << "Nobles\tSoldiers\tClergy\tMerchants\tSerfs\tLand\tTreasury\n";
     for(; i < HowMany; i++)
         printf("\n%s %s\n%d\t%d\t\t%d\t%d\t\t%d\t%d\t%d\n",
                 MyPlayers[i].Title, MyPlayers[i].Name,
@@ -830,20 +419,17 @@ void ShowStats(player MyPlayers[6], int HowMany)
                 MyPlayers[i].Clergy, MyPlayers[i].Merchants,
                 MyPlayers[i].Serfs, MyPlayers[i].Land,
                 MyPlayers[i].Treasury);
-    printf("\n(Press ENTER): ");
+    std::cout << "\n(Press ENTER): ";
     fgets(string, 255, stdin);
-    return;
 }
-void ImDead(player *Me)
+
+/*void ImDead(player *Me)
 {
-    char string[256];
     int why;
 
-    printf("\n\nVery sad news.\n%s %s has just died\n", Me->Title,
-            Me->Name);
-
+    std::cout << "\n\nVery sad news.\n" << Me->Title << " " << Me->Name << " has just died\n";
     if(Me->Year > 1450)
-        printf("of old age after a long reign.\n");
+        std::cout << " of old age after a long reign.\n";
     else
     {
         why = Random(8);
@@ -861,7 +447,8 @@ void ImDead(player *Me)
         }
     }
     Me->IsDead = 1;
-    printf("\n(Press ENTER): ");
-    fgets(string, 255, stdin);
-    return;
+    std::cout << "\n(Press ENTER): ";
+    std::cin.ignore();
 }
+*/
+#endif
